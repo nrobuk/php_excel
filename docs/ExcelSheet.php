@@ -71,9 +71,63 @@ class ExcelSheet
 	const ERRORTYPE_NAME = 29;
 	const ERRORTYPE_NUM = 36;
 	const ERRORTYPE_NA = 42;
+	const ERRORTYPE_NOERROR = 255;
 
 	const LEFT_TO_RIGHT = 0;
 	const RIGHT_TO_LEFT = 1;
+
+	const IERR_EVAL_ERROR = 1;
+	const IERR_EMPTY_CELLREF = 2;
+	const IERR_NUMBER_STORED_AS_TEXT = 4;
+	const IERR_INCONSIST_RANGE = 8;
+	const IERR_INCONSIST_FMLA = 16;
+	const IERR_TWODIG_TEXTYEAR = 32;
+	const IERR_UNLOCK_FMLA = 64;
+	const IERR_DATA_VALIDATION = 128;
+
+	const PROT_DEFAULT = -1;
+	const PROT_ALL = 0;
+	const PROT_OBJECTS = 1;
+	const PROT_SCENARIOS = 2;
+	const PROT_FORMAT_CELLS = 4;
+	const PROT_FORMAT_COLUMNS = 8;
+	const PROT_FORMAT_ROWS = 16;
+	const PROT_INSERT_COLUMNS = 32;
+	const PROT_INSERT_ROWS = 64;
+	const PROT_INSERT_HYPERLINKS = 128;
+	const PROT_DELETE_COLUMNS = 256;
+	const PROT_DELETE_ROWS = 512;
+	const PROT_SEL_LOCKED_CELLS = 1024;
+	const PROT_SORT = 2048;
+	const PROT_AUTOFILTER = 4096;
+	const PROT_PIVOTTABLES = 8192;
+	const PROT_SEL_UNLOCKED_CELLS = 16384;
+
+	const SHEETSTATE_VISIBLE = 0;
+	const SHEETSTATE_HIDDEN = 1;
+	const SHEETSTATE_VERYHIDDEN = 2;
+
+	const VALIDATION_TYPE_NONE = 0;
+	const VALIDATION_TYPE_WHOLE = 1;
+	const VALIDATION_TYPE_DECIMAL = 2;
+	const VALIDATION_TYPE_LIST = 3;
+	const VALIDATION_TYPE_DATE = 4;
+	const VALIDATION_TYPE_TIME = 5;
+	const VALIDATION_TYPE_TEXTLENGTH = 6;
+	const VALIDATION_TYPE_CUSTOM = 7;
+
+	const VALIDATION_OP_BETWEEN = 0;
+	const VALIDATION_OP_NOTBETWEEN = 1;
+	const VALIDATION_OP_EQUAL = 2;
+	const VALIDATION_OP_NOTEQUAL = 3;
+	const VALIDATION_OP_LESSTHAN = 4;
+	const VALIDATION_OP_LESSTHANOREQUAL = 5;
+	const VALIDATION_OP_GREATERTHAN = 6;
+	const VALIDATION_OP_GREATERTHANOREQUAL = 7;
+
+	const VALIDATION_ERRSTYLE_STOP = 0; // stop icon in the error alert
+	const VALIDATION_ERRSTYLE_WARNING = 1; // warning icon in the error alert
+	const VALIDATION_ERRSTYLE_INFORMATION = 2; // information icon in the error alert
 
 	/**
 	* Create an ExcelSheet in given Workbook
@@ -85,6 +139,59 @@ class ExcelSheet
 	public function __construct(ExcelBook $book, $name)
 	{
 	} // __construct
+
+	/**
+	* Adds a data validation for the specified range (only for xlsx files).
+	*
+	* @since libXL 3.8.0.0
+	* @param int $type - one of the ExcelSheet::VALIDATION_TYPE_* constants
+	* @param int $op - one of the ExcelSheet::VALIDATION_OP_* constants
+	* @param int $row_first 0-based
+	* @param int $row_last 0-based
+	* @param int $col_first 0-based
+	* @param int $col_last 0-based
+	* @param string $val_1 the first value for relational operator
+	* @param string $val_2 the second value for VALIDATION_OP_BETWEEN or VALIDATION_OP_NOTBETWEEN operator
+	* @param bool $allow_blank (optional, default = true) a boolean value indicating whether the data validation treats empty or blank entries as valid, 'true' means empty entries are OK and do not violate the validation constraints
+	* @param bool $hide_dropdown (optional, default = false) a boolean value indicating whether to display the dropdown combo box for a list type data validation (ExcelSheet::VALIDATION_TYPE_LIST)
+	* @param bool $show_inputmessage (optional, default = true) a boolean value indicating whether to display the input prompt message
+	* @param bool $show_errormessage (optional, default = true) a boolean value indicating whether to display the error alert message when an invalid value has been entered, according to the criteria specified
+	* @param string $prompt_title (optional, default = '') title bar text of input prompt
+	* @param string $prompt (optional, default = '') message text of input prompt
+	* @param string $error_title (optional, default = '') title bar text of error alert
+	* @param string $error (optional, default = '') message text of error alert
+	* @param int $error_style - (optional, default = \ExcelSheet::VALIDATION_ERRSTYLE_WARNING) one of the ExcelSheet::VALIDATION_ERRSTYLE_* constants
+	*/
+	public function addDataValidation($type, $op, $row_first, $row_last, $col_first, $col_last, $val_1, $val_2 = null, $allow_blank = true, $hide_dropdown = false, $show_inputmessage = true, $show_errormessage = true, $prompt_title = '', $prompt = '', $error_title = '', $error = '', $error_style = \ExcelSheet::VALIDATION_ERRSTYLE_WARNING)
+	{
+	} // addDataValidation
+
+	/**
+	* Adds a data validation for the specified range with double or date values for the relational
+	* operator (only for xlsx files).
+	*
+	* @since libXL 3.8.0.0
+	* @param int $type - one of the ExcelSheet::VALIDATION_TYPE_* constants
+	* @param int $op - one of the ExcelSheet::VALIDATION_OP_* constants
+	* @param int $row_first 0-based
+	* @param int $row_last 0-based
+	* @param int $col_first 0-based
+	* @param int $col_last 0-based
+	* @param float $val_1 the first value for relational operator
+	* @param float $val_2 the second value for VALIDATION_OP_BETWEEN or VALIDATION_OP_NOTBETWEEN operator
+	* @param bool $allow_blank (optional, default = true) a boolean value indicating whether the data validation treats empty or blank entries as valid, 'true' means empty entries are OK and do not violate the validation constraints
+	* @param bool $hide_dropdown (optional, default = false) a boolean value indicating whether to display the dropdown combo box for a list type data validation (ExcelSheet::VALIDATION_TYPE_LIST)
+	* @param bool $show_inputmessage (optional, default = true) a boolean value indicating whether to display the input prompt message
+	* @param bool $show_errormessage (optional, default = true) a boolean value indicating whether to display the error alert message when an invalid value has been entered, according to the criteria specified
+	* @param string $prompt_title (optional, default = '') title bar text of input prompt
+	* @param string $prompt (optional, default = '') message text of input prompt
+	* @param string $error_title (optional, default = '') title bar text of error alert
+	* @param string $error (optional, default = '') message text of error alert
+	* @param int $error_style - (optional, default = \ExcelSheet::VALIDATION_ERRSTYLE_WARNING) one of the ExcelSheet::VALIDATION_ERRSTYLE_* constants
+	*/
+	public function addDataValidationDouble($type, $op, $row_first, $row_last, $col_first, $col_last, $val_1, $val_2 = null, $allow_blank = true, $hide_dropdown = false, $show_inputmessage = true, $show_errormessage = true, $prompt_title = '', $prompt = '', $error_title = '', $error = '', $error_style = \ExcelSheet::VALIDATION_ERRSTYLE_WARNING)
+	{
+	} // addDataValidationDouble
 
 	/**
 	* Adds the new hyperlink.
@@ -99,6 +206,20 @@ class ExcelSheet
 	public function addHyperlink($hyperlink, $row_first, $row_last, $col_first, $col_last)
 	{
 	} // addHyperlink
+
+	/**
+	* Adds the ignored error for specified range. It allows to hide green triangles on left sides of cells.
+	*
+	* @param int $error - one of the ExcelSheet::IERR_* constants
+	* @param int $row_first 0-based (optional, default = 0)
+	* @param int $col_first 0-based (optional, default = 0)
+	* @param int $row_last 0-based (optional, default = 0)
+	* @param int $col_last 0-based (optional, default = 0)
+	* @return bool
+	*/
+	public function addIgnoredError($error, $row_first=0, $col_first=0, $row_last=0, $col_last=0)
+	{
+	} // addIgnoredError
 
 	/**
 	* Insert a picture into a cell with given dimensions
@@ -148,6 +269,33 @@ class ExcelSheet
 	} // addrToRowCol
 
 	/**
+	* Returns the AutoFilter. Creates it if it doesn't exist.
+	*
+	* @return ExcelAutoFilter
+	*/
+	public function autoFilter()
+	{
+	} // autoFilter
+
+	/**
+	* Applies the AutoFilter to the sheet.
+	*
+	* @return bool
+	*/
+	public function applyFilter()
+	{
+	} // applyFilter
+
+	/**
+	* Removes the AutoFilter from the sheet.
+	*
+	* @return bool
+	*/
+	public function removeFilter()
+	{
+	} // removeFilter
+
+	/**
 	* Get the cell format
 	*
 	* @param int $row 0-based row number
@@ -163,7 +311,7 @@ class ExcelSheet
 	*
 	* @param int $row 0-based row number
 	* @param int $column 0-based column number
-	* @return int One of ExcelSheet:CELLTYPE_* constants
+	* @return int One of ExcelSheet::CELLTYPE_* constants
 	*/
 	public function cellType($row, $column)
 	{
@@ -891,6 +1039,16 @@ class ExcelSheet
 	} // removeCol
 
 	/**
+	* Removes all data validations for the sheet (only for xlsx files).
+	*
+	* @since libXL 3.8.0.0
+	* @return bool
+	*/
+	public function removeDataValidations()
+	{
+	} // removeDataValidations
+
+	/**
 	* Remove rows from row_start to row_end
 	*
 	* @param int $row_start 0-based row number
@@ -987,7 +1145,7 @@ class ExcelSheet
 	* @param int $column_end 0-based column number
 	* @return bool
 	*/
-	public function setAutofitArea($row_start=0, $row_end=-1, $column_start=0, $column_end=-1)
+	public function setAutofitArea($row_start = 0, $row_end = -1, $column_start = 0, $column_end = -1)
 	{
 	} // setAutofitArea
 
@@ -1238,6 +1396,16 @@ class ExcelSheet
 	} // setPrintRepeatCols
 
 	/**
+	* Sets the color for the sheet's tab.
+	*
+	* @param int $color - one of the ExcelSheet::COLOR_* constants (optional, default=0)
+	* @return bool
+	*/
+	public function setTabColor($color=0)
+	{
+	} // setTabColor
+
+	/**
 	* Gets repeated columns on each page from colFirst to colLast. Returns false
 	* if repeated columns aren't found.
 	*
@@ -1275,9 +1443,11 @@ class ExcelSheet
 	*
 	* @see ExcelSheet::protect()
 	* @param bool $value
+	* @param string $password (optional, default="")
+	* @param int ExcelSheet::PROT_ALL (optional, default=ExcelSheet::PROT_DEFAULT)
 	* @return void
 	*/
-	public function setProtect($value)
+	public function setProtect($value, $password = '', $enhancedProtection = ExcelSheet::PROT_DEFAULT)
 	{
 	} // setProtect
 
@@ -1385,6 +1555,25 @@ class ExcelSheet
 	} // splitSheet
 
 	/**
+	* Gets the table parameters by index.
+	*
+	* @param int $index (optional, default = 0)
+	* @return array with keys "name"(string), "row_first"(int), "col_first"(int), "row_last"(int), "col_last"(int), "header_row_count"(int) and "totals_row_count"(int)
+	*/
+	public function table($index = 0)
+	{
+	} // table
+
+	/**
+	* Returns the number of tables in the sheet.
+	*
+	* @return int
+	*/
+	public function tableSize()
+	{
+	} // tableSize
+
+	/**
 	* Returns whether the sheet is centered vertically when printed
 	*
 	* @see ExcelSheet::hcenter()
@@ -1449,6 +1638,19 @@ class ExcelSheet
 	public function writeComment($row, $column, $comment, $author, $width, $height)
 	{
 	} // writeComment
+
+	/**
+	* Writes error into the cell with specified format. If format equals 0 then format is ignored.
+	*
+	* @param int $row (optional, default = 0)
+	* @param int $col (optional, default = 0)
+	* @param int $error - one of ExcelSheet::ERRORTYPE_* constants  (optional, default = 0)
+	* @param ExcelFormat $format  (optional, default = null)
+	* @return bool
+	*/
+	public function writeError($row = 0, $col = 0, $error = 0, $format = null)
+	{
+	} // writeError
 
 	/**
 	* Write an array of values into a row
