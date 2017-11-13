@@ -4,9 +4,11 @@ Excel font tests
 <?php if (!extension_loaded("excel")) print "skip"; ?>
 --FILE--
 <?php 
+echo("1 -> \n");
 	$x = new ExcelBook();
+echo("2 -> \n");
 	$font = $x->addFont();
-	
+echo("3 -> \n");	
 	var_dump(
 		$font->name(),
 		$font->size(),

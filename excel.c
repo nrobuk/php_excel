@@ -28,10 +28,6 @@
 #include "ext/standard/info.h"
 #include "ext/date/php_date.h"
 
-#if defined(HAVE_XML) && defined(EXCEL_WITH_LIBXML)
-#include "ext/xml/php_xml.h"
-#endif
-
 #include "php_excel.h"
 #include "zend_exceptions.h"
 
@@ -74,7 +70,7 @@ PHP_INI_END()
 		ce.create_object = excel_object_new_ ## c_name; \
 		excel_ce_ ## c_name = zend_register_internal_class_ex(&ce, NULL, NULL TSRMLS_CC); \
 		memcpy(&excel_object_handlers_ ## c_name, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-		excel_object_handlers_ ## c_name.clone_obj = clone;  \
+		excel_object_handlers_ ## c_name.clone_obj = clone; \
 	}
 
 #if LIBXL_VERSION < 0x03070000
