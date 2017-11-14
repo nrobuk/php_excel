@@ -5884,12 +5884,15 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_sheetType, 0, 0, 1)
 ZEND_END_ARG_INFO()
 #endif
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_getLibXlVersion, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_getPhpExcelVersion, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Font_size, 0, 0, 0)
 	ZEND_ARG_INFO(0, size)
 ZEND_END_ARG_INFO()
@@ -6761,14 +6764,17 @@ ZEND_END_ARG_INFO()
 #endif
 
 #if LIBXL_VERSION >= 0x03070000
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_setTabColor, 0, 0, 0)
 	ZEND_ARG_INFO(0, color)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_table, 0, 0, 1)
 	ZEND_ARG_INFO(0, index)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addIgnoredError, 0, 0, 1)
 	ZEND_ARG_INFO(0, iError)
 	ZEND_ARG_INFO(0, rowFirst)
@@ -6777,11 +6783,13 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addIgnoredError, 0, 0, 1)
 	ZEND_ARG_INFO(0, colLast)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_removeComment, 0, 0, 2)
 	ZEND_ARG_INFO(0, row)
 	ZEND_ARG_INFO(0, col)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_writeError, 0, 0, 0)
 	ZEND_ARG_INFO(0, row)
 	ZEND_ARG_INFO(0, col)
@@ -6789,22 +6797,28 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_writeError, 0, 0, 0)
 	ZEND_ARG_OBJ_INFO(0, format, ExcelFormat, 1)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_applyFilter, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_autoFilter, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_removeFilter, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter___construct, 0, 0, 0)
 	ZEND_ARG_OBJ_INFO(0, sheet, ExcelSheet, 1)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_getRef, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_setRef, 0, 0, 0)
 	ZEND_ARG_INFO(0, row_first)
 	ZEND_ARG_INFO(0, col_first)
@@ -6812,61 +6826,77 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_setRef, 0, 0, 0)
 	ZEND_ARG_INFO(0, col_last)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_column, 0, 0, 1)
 	ZEND_ARG_INFO(0, colId)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_columnSize, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_columnByIndex, 0, 0, 1)
 	ZEND_ARG_INFO(0, index)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_getSortRange, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_getSort, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_AutoFilter_setSort, 0, 0, 2)
 	ZEND_ARG_INFO(0, columnIndex)
 	ZEND_ARG_INFO(0, descending)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn___construct, 0, 0, 1)
 	ZEND_ARG_OBJ_INFO(0, autoFilter, AutoFilter, 1)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_index, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_filterType, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_filterSize, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_filter, 0, 0, 1)
 	ZEND_ARG_INFO(0, index)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_addFilter, 0, 0, 1)
 	ZEND_ARG_INFO(0, filterValue)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_getTop10, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_setTop10, 0, 0, 1)
 	ZEND_ARG_INFO(0, value)
 	ZEND_ARG_INFO(0, top)
 	ZEND_ARG_INFO(0, percent)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_getCustomFilter, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_setCustomFilter, 0, 0, 2)
 	ZEND_ARG_INFO(0, operator_1)
 	ZEND_ARG_INFO(0, value_1)
@@ -6875,21 +6905,25 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_setCustomFilter, 0, 0, 2)
 	ZEND_ARG_INFO(0, andOp)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_FilterColumn_clear, 0, 0, 0)
 ZEND_END_ARG_INFO()
 #endif
 
 #if LIBXL_VERSION >= 0x03080000
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_addPictureAsLink, 0, 0, 1)
 	ZEND_ARG_INFO(0, filename)
 	ZEND_ARG_INFO(0, insert)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Book_moveSheet, 0, 0, 2)
 	ZEND_ARG_INFO(0, src_index)
 	ZEND_ARG_INFO(0, dest_index)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addDataValidation, 0, 0, 7)
 	ZEND_ARG_INFO(0, type)
 	ZEND_ARG_INFO(0, op)
@@ -6910,6 +6944,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addDataValidation, 0, 0, 7)
 	ZEND_ARG_INFO(0, error_style)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addDataValidationDouble, 0, 0, 7)
 	ZEND_ARG_INFO(0, type)
 	ZEND_ARG_INFO(0, op)
@@ -6930,6 +6965,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_addDataValidationDouble, 0, 0, 7)
 	ZEND_ARG_INFO(0, error_style)
 ZEND_END_ARG_INFO()
 
+PHP_EXCEL_ARGINFO
 ZEND_BEGIN_ARG_INFO_EX(arginfo_Sheet_removeDataValidations, 0, 0, 0)
 ZEND_END_ARG_INFO()
 #endif
