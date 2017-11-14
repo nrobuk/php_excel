@@ -28,6 +28,10 @@
 #include "ext/standard/info.h"
 #include "ext/date/php_date.h"
 
+#if defined(HAVE_XML) && defined(EXCEL_WITH_LIBXML)
+#include "ext/xml/php_xml.h"
+#endif
+
 #include "php_excel.h"
 #include "zend_exceptions.h"
 
@@ -39,6 +43,26 @@ static long xlFormatBorderColor(FormatHandle f)
 {
 	return 1;
 }
+
+/* work-around for missing headers in LibXL */
+
+#ifndef LIBXL_VERSION
+
+#define xlSheetSetProtect xlSheetSetProtectA
+#ifndef HAVE_LIBXL_243_PLUS
+#define xlSheetProtect xlSheetProtectA
+#endif
+
+#endif
+
+#if LIBXL_VERSION >= 0x03020000
+#define xlBookSetRefR1C1 xlBookSetRefR1C1A
+#define xlBookRefR1C1 xlBookRefR1C1A
+#endif
+
+#if LIBXL_VERSION >= 0x03020000 && LIBXL_VERSION < 0x03050401
+enum libXLPictureType {PICTURETYPE_PNG, PICTURETYPE_JPEG, PICTURETYPE_WMF, PICTURETYPE_DIB, PICTURETYPE_EMF, PICTURETYPE_PICT, PICTURETYPE_TIFF, PICTURETYPE_ERROR = 0xFF};
+#endif
 
 #define PHP_EXCEL_DATE 1
 #define PHP_EXCEL_FORMULA 2
@@ -70,7 +94,7 @@ PHP_INI_END()
 		ce.create_object = excel_object_new_ ## c_name; \
 		excel_ce_ ## c_name = zend_register_internal_class_ex(&ce, NULL, NULL TSRMLS_CC); \
 		memcpy(&excel_object_handlers_ ## c_name, zend_get_std_object_handlers(), sizeof(zend_object_handlers)); \
-		excel_object_handlers_ ## c_name.clone_obj = clone; \
+		excel_object_handlers_ ## c_name.clone_obj = clone;  \
 	}
 
 #if LIBXL_VERSION < 0x03070000
@@ -91,8 +115,8 @@ static zend_object_handlers excel_object_handlers_font;
 #endif
 
 typedef struct _excel_book_object {
+	zend_object	std;
 	BookHandle book;
-	zend_object std;
 } excel_book_object;
 
 #define BOOK_FROM_OBJECT(book, object) \
@@ -159,9 +183,9 @@ typedef struct _excel_font_object {
 	}
 
 typedef struct _excel_format_object {
-    zend_object	std;
-    FormatHandle format;
-    BookHandle book;
+	zend_object	std;
+	FormatHandle format;
+	BookHandle book;
 } excel_format_object;
 
 #define AUTOFILTER_FROM_OBJECT(autofilter, object) \
@@ -492,10 +516,6 @@ static zend_object_value excel_object_new_filtercolumn(zend_class_entry *class_t
 #define EXCEL_METHOD(class_name, function_name) \
 	PHP_METHOD(Excel ## class_name, function_name)
 
-#define EXCEL_NON_EMPTY_STRING(string_zval) \
-	if (!string_zval || strlen(string_zval) < 1) {	\
-		RETURN_FALSE;	\
-	}
 
 /* {{{ proto bool ExcelBook::requiresKey()
 	true if license key is required. */
@@ -4436,13 +4456,7 @@ EXCEL_METHOD(Sheet, protect)
 }
 /* }}} */
 
-/* {{{ proto void ExcelSheet::setProtect(bool value)
-	Protects (protect = 1) or unprotects (protect = 0) the sheet. */
-//EXCEL_METHOD(Sheet, setProtect)
-//{
-//	PHP_EXCEL_SET_BOOL_VAL(SetProtect)
-//}
-/* }}} */
+
 
 #if LIBXL_VERSION >= 0x03060000
 /* {{{ proto long ExcelSheet::hyperlinkSize()
@@ -5464,14 +5478,14 @@ EXCEL_METHOD(FilterColumn, setCustomFilter)
 
 	FILTERCOLUMN_FROM_OBJECT(filtercolumn, object);
 
-	EXCEL_NON_EMPTY_STRING(v1);
+	//EXCEL_NON_EMPTY_STRING(v1);
 
 	if (op2 == -1 || !v2) {
 		xlFilterColumnSetCustomFilter(filtercolumn, op1, v1);
 		RETURN_TRUE;
 	}
 
-	EXCEL_NON_EMPTY_STRING(v2);
+	//EXCEL_NON_EMPTY_STRING(v2);
 
 	xlFilterColumnSetCustomFilterEx(filtercolumn, op1, v1, op2, v2, andOp);
 	RETURN_TRUE;
@@ -6971,13 +6985,15 @@ ZEND_END_ARG_INFO()
 #endif
 
 #define EXCEL_ME(class_name, function_name, arg_info, flags) \
-	PHP_ME(Excel ## class_name, function_name, arg_info, flags)
+	PHP_ME( Excel ## class_name, function_name, arg_info, flags)
 
 zend_function_entry excel_funcs_book[] = {
 	EXCEL_ME(Book, requiresKey, arginfo_Book_requiresKey, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
 	EXCEL_ME(Book, addFont, arginfo_Book_addFont, 0)
 	EXCEL_ME(Book, addFormat, arginfo_Book_addFormat, 0)
+#ifdef HAVE_LIBXL_243_PLUS
 	EXCEL_ME(Book, getAllFormats, arginfo_Book_getAllFormats, 0)
+#endif
 	EXCEL_ME(Book, getError, arginfo_Book_getError, 0)
 	EXCEL_ME(Book, loadFile, arginfo_Book_loadFile, 0)
 	EXCEL_ME(Book, load, arginfo_Book_load, 0)
@@ -7001,22 +7017,32 @@ zend_function_entry excel_funcs_book[] = {
 	EXCEL_ME(Book, setLocale, arginfo_Book_setLocale, 0)
 	EXCEL_ME(Book, addPictureFromFile, arginfo_Book_addPictureFromFile, 0)
 	EXCEL_ME(Book, addPictureFromString, arginfo_Book_addPictureFromString, 0)
+#ifdef LIBXL_VERSION
 	EXCEL_ME(Book, rgbMode, arginfo_Book_rgbMode, 0)
 	EXCEL_ME(Book, setRGBMode, arginfo_Book_setRGBMode, 0)
 	EXCEL_ME(Book, colorPack, arginfo_Book_colorPack, 0)
 	EXCEL_ME(Book, colorUnpack, arginfo_Book_colorUnpack, 0)
+#endif
+#if LIBXL_VERSION >= 0x03050300
 	EXCEL_ME(Book, isDate1904, arginfo_Book_isDate1904, 0)
 	EXCEL_ME(Book, setDate1904, arginfo_Book_setDate1904, 0)
+#endif
 	EXCEL_ME(Book, __construct, arginfo_Book___construct, 0)
+#if LIBXL_VERSION >= 0x03020000
 	EXCEL_ME(Book, biffVersion, arginfo_Book_biffVersion, 0)
 	EXCEL_ME(Book, setRefR1C1, arginfo_Book_setRefR1C1, 0)
 	EXCEL_ME(Book, getRefR1C1, arginfo_Book_getRefR1C1, 0)
 	EXCEL_ME(Book, getPicture, arginfo_Book_getPicture, 0)
 	EXCEL_ME(Book, getNumPictures, arginfo_Book_getNumPictures, 0)
 	EXCEL_ME(Book, insertSheet, arginfo_Book_insertSheet, 0)
+#endif
+#if LIBXL_VERSION >= 0x03050401
 	EXCEL_ME(Book, isTemplate, arginfo_Book_isTemplate, 0)
 	EXCEL_ME(Book, setTemplate, arginfo_Book_setTemplate, 0)
+#endif
+#if LIBXL_VERSION >= 0x03060000
 	EXCEL_ME(Book, sheetType, arginfo_Book_sheetType, 0)
+#endif
 	EXCEL_ME(Book, getLibXlVersion, arginfo_Book_getLibXlVersion, 0)
 	EXCEL_ME(Book, getPhpExcelVersion, arginfo_Book_getPhpExcelVersion, 0)
 #if LIBXL_VERSION >= 0x03080000
@@ -7507,7 +7533,6 @@ PHP_MINIT_FUNCTION(excel)
 #if LIBXL_VERSION >= 0x03050401
 	REGISTER_EXCEL_CLASS_CONST_LONG(book, "SCOPE_UNDEFINED", SCOPE_UNDEFINED);
 	REGISTER_EXCEL_CLASS_CONST_LONG(book, "SCOPE_WORKBOOK", SCOPE_WORKBOOK);
-
 	REGISTER_EXCEL_CLASS_CONST_LONG(sheet, "RIGHT_TO_LEFT", 1);
 	REGISTER_EXCEL_CLASS_CONST_LONG(sheet, "LEFT_TO_RIGHT", 0);
 #endif
