@@ -5574,7 +5574,7 @@ EXCEL_METHOD(Sheet, addDataValidation)
 	char *error = "";
 	long error_style = 1;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "llllllS|SbbbbSSSSl", &type, &op, &row_first, &row_last, \
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllllls|sbbbbssssl", &type, &op, &row_first, &row_last, \
 			&col_first, &col_last, &val_1, &val_2, &allow_blank, &hide_dropdown, &show_inputmessage, \
 			&show_errormessage, &prompt_title, &prompt, &error_title, &error, &error_style) == FAILURE) {
 		RETURN_FALSE;
