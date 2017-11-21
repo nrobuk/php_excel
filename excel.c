@@ -5585,10 +5585,10 @@ EXCEL_METHOD(Sheet, addDataValidation)
 		RETURN_FALSE;
 	}
 
-	if ((op == VALIDATION_OP_BETWEEN || op == VALIDATION_OP_NOTBETWEEN) && ZEND_NUM_ARGS() < 8) {
-		php_error_docref(NULL, E_WARNING, "The second value can not be null when used with (not) between operator.");
-		RETURN_FALSE;
-	}
+	//if ((op == VALIDATION_OP_BETWEEN || op == VALIDATION_OP_NOTBETWEEN) && ZEND_NUM_ARGS() < 8) {
+	//	php_error_docref(NULL, E_WARNING, "The second value can not be null when used with (not) between operator.");
+	//	RETURN_FALSE;
+	//}
 
 	SHEET_FROM_OBJECT(sheet, object);
 
@@ -5623,10 +5623,10 @@ EXCEL_METHOD(Sheet, addDataValidationDouble)
 		RETURN_FALSE;
 	}
 
-	if ((op == VALIDATION_OP_BETWEEN || op == VALIDATION_OP_NOTBETWEEN) && ZEND_NUM_ARGS() < 8) {
-		php_error_docref(NULL, E_WARNING, "The second value can not be null when used with (not) between operator.");
-		RETURN_FALSE;
-	}
+	//if ((op == VALIDATION_OP_BETWEEN || op == VALIDATION_OP_NOTBETWEEN) && ZEND_NUM_ARGS() < 8) {
+	//	php_error_docref(NULL, E_WARNING, "The second value can not be null when used with (not) between operator.");
+	//	RETURN_FALSE;
+	//}
 
 	SHEET_FROM_OBJECT(sheet, object);
 
