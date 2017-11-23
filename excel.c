@@ -5591,7 +5591,7 @@ EXCEL_METHOD(Sheet, addDataValidation)
 		RETURN_FALSE;
 	}
 
-	if (!val_1 || strlen(val_1) < 1) {
+	if (!val_1 || *val_1_len < 1) {
 		php_error_docref(NULL, E_WARNING, "The first value can not be empty.");
 		RETURN_FALSE;
 	}
