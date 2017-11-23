@@ -4896,7 +4896,7 @@ EXCEL_METHOD(Sheet, setProtect)
 	int *password_len;
 	int enhancedProtection = PROT_DEFAULT;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "b|Sl", &protect, &password, &password_len, &enhancedProtection) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "b|sl", &protect, &password, &password_len, &enhancedProtection) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -5381,8 +5381,9 @@ EXCEL_METHOD(FilterColumn, addFilter)
 	zval *object = getThis();
 	FilterColumnHandle filtercolumn;
 	char *filtervalue = NULL;
+	int *filtervalue_len;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S", &filtervalue) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &filtervalue, &filtervalue_len) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -5470,9 +5471,10 @@ EXCEL_METHOD(FilterColumn, setCustomFilter)
 	FilterColumnHandle filtercolumn;
 	int op1, op2 = -1;
 	char *v1 = NULL, *v2 = NULL;
+	int *v1_len , *v2_len ;
 	zend_bool andOp = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "lS|lSb", &op1, &v1, &op2, &v2, &andOp) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "ls|lsb", &op1, &v1,&v1_len, &op2, &v2,&v2_len, &andOp) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -5516,10 +5518,11 @@ EXCEL_METHOD(Book, addPictureAsLink)
 	zval *object = getThis();
 	BookHandle book;
 	char *filename;
+	int *filename_len;
 	zend_bool insert = 0;
 	long result;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "S|b", &filename, &insert) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|b", &filename,&filename_len, &insert) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -5565,18 +5568,26 @@ EXCEL_METHOD(Sheet, addDataValidation)
 	zval *object = getThis();
 	SheetHandle sheet;
 
-	long type, op, row_first, row_last, col_first, col_last;
+	int type, op, row_first, row_last, col_first, col_last;
 	char *val_1, *val_2;
 	zend_bool allow_blank = 1, hide_dropdown=0, show_inputmessage = 1, show_errormessage = 1;
 	char *prompt_title = "";
 	char *prompt = "";
 	char *error_title = "";
 	char *error = "";
-	long error_style = 1;
+
+    int *val_1_len, *val_2_len;
+    int *prompt_title_len;
+    int *prompt_len;
+    int *error_title_len;
+    int *error_len;
+
+
+    int error_style = 1;
 
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllllls|sbbbbssssl", &type, &op, &row_first, &row_last, \
-			&col_first, &col_last, &val_1, &val_2, &allow_blank, &hide_dropdown, &show_inputmessage, \
-			&show_errormessage, &prompt_title, &prompt, &error_title, &error, &error_style) == FAILURE) {
+			&col_first, &col_last, &val_1,&val_1_len, &val_2,&val_2_len, &allow_blank, &hide_dropdown, &show_inputmessage, \
+			&show_errormessage, &prompt_title,&prompt_title_len, &prompt,&prompt_len, &error_title,&error_title_len, &error,&error_len, &error_style) == FAILURE) {
 		RETURN_FALSE;
 	}
 
@@ -5608,18 +5619,25 @@ EXCEL_METHOD(Sheet, addDataValidationDouble)
 	zval *object = getThis();
 	SheetHandle sheet;
 
-	long type, op, row_first, row_last, col_first, col_last;
+	int type, op, row_first, row_last, col_first, col_last;
 	double val_1, val_2;
 	zend_bool allow_blank = 1, hide_dropdown=0, show_inputmessage = 1, show_errormessage = 1;
 	char *prompt_title = "";
 	char *prompt = "";
 	char *error_title = "";
 	char *error = "";
-	long error_style = 1;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllllld|dbbbbSSSSl", &type, &op, &row_first, &row_last, \
-	        &col_first, &col_last, &val_1, &val_2, &allow_blank, &hide_dropdown, &show_inputmessage, \
-			&show_errormessage, &prompt_title, &prompt, &error_title, &error, &error_style) == FAILURE) {
+    int *val_1_len, *val_2_len;
+    int *prompt_title_len;
+    int *prompt_len;
+    int *error_title_len;
+    int *error_len;
+
+	int error_style = 1;
+
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lllllld|dbbbbssssl", &type, &op, &row_first, &row_last, \
+	        &col_first, &col_last, &val_1,&val_1_len, &val_2,&val_2_len, &allow_blank, &hide_dropdown, &show_inputmessage, \
+			&show_errormessage, &prompt_title,&prompt_title_len, &prompt,&prompt_len, &error_title,&error_title_len, &error,&error_len, &error_style) == FAILURE) {
 		RETURN_FALSE;
 	}
 

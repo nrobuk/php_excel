@@ -68,3 +68,4 @@ libxl/*
 .idea
 CMakeLists.txt
 configlog\.log
+cmake-build-debug

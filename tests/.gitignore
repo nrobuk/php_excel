@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+*.php
+*.sh
+*.diff
+*.exp
+*.log
+*.out
